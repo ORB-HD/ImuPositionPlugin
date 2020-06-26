@@ -1,7 +1,7 @@
 ImuPositionPlugin
 =======================
 
-# Build and Install
+## Build and Install
 
 With these commands you can build this plugin outside of the rbdl-toolkit src tree, but you will also need to have a rbdl-toolkit build dir.
 
