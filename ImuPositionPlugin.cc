@@ -31,28 +31,19 @@ void ImuPositionPlugin::init(ToolkitApp* app) {
 	                               );
 	parentApp->addCmdOption(imuposition_option, [this](QCommandLineParser& parser){
 		auto data_list = parser.values("imuposition");
-		for (auto file : data_list) {
-			ImuPositionModelExtention* ext;
-			try {
-				ext = loadImuPositionFile(file);
-			} catch (RigidBodyDynamics::Errors::RBDLError& e){
-				ToolkitApp::showExceptionDialog(e);
-				delete ext;
-			}
-			if (parentApp->getLoadedModels()->size() != 0) {
-				RBDLModelWrapper* rbdl_model = nullptr;
-
-				if (parentApp->getLoadedModels()->size() == 1) {
-					rbdl_model = parentApp->getLoadedModels()->at(0);
-				} else {
-					rbdl_model = parentApp->selectModel(nullptr);
-				}
-
-				if (rbdl_model != nullptr) {
-					rbdl_model->addExtention(ext);
-				} else {
+		for (int i=0; i<data_list.size(); i++) {
+			if (i < parentApp->getLoadedModels()->size() ) {
+				auto file = data_list[i];
+				ImuPositionModelExtention* ext;
+				try {
+					ext = loadImuPositionFile(file);
+				} catch (RigidBodyDynamics::Errors::RBDLError& e){
+					ToolkitApp::showExceptionDialog(e);
 					delete ext;
 				}
+				RBDLModelWrapper* rbdl_model = parentApp->getLoadedModels()->at(i);
+				rbdl_model->addExtention(ext);
+				model_file_map[rbdl_model] = file;
 			}
 		}
 		
@@ -60,7 +51,7 @@ void ImuPositionPlugin::init(ToolkitApp* app) {
 
 	loadImuPositionSettings();
 
-	std::cout << "ImuPositionPlugin loaded" << std::endl;
+	connect(parentApp, &ToolkitApp::reloaded_model, this, &ImuPositionPlugin::reload);
 }
 
 void ImuPositionPlugin::loadImuPositionSettings() {
@@ -116,11 +107,21 @@ void ImuPositionPlugin::action_load_data() {
 				} else {
 					delete ext;
 				}
+				model_file_map[rbdl_model] = file_dialog.selectedFiles().at(0);
 			}
 		}	
 	} else {
 		//should never happen
 		throw RigidBodyDynamics::Errors::RBDLError("ImuPositionPlugin was not initialized correctly!");
+	}
+}
+
+void ImuPositionPlugin::reload(RBDLModelWrapper* model) {
+	for (auto it = model_file_map.begin(); it != model_file_map.end(); it++) {
+		if ( it->first == model ) {
+			auto ext = loadImuPositionFile(it->second);
+			model->addExtention(ext);
+		}
 	}
 }
 

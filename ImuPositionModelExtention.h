@@ -13,7 +13,7 @@ class ImuPositionModelExtention : public WrapperExtention {
 		float imu_size; 
 		QColor imu_color;
 
-		Qt3DRender::QMesh imu_mesh;
+		Qt3DRender::QMesh* imu_mesh;
 
 		std::vector<std::string> imu_segments;
 		std::vector<Vector3d> imu_positions;

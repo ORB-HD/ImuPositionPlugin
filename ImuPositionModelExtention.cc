@@ -13,7 +13,8 @@ ImuPositionModelExtention::ImuPositionModelExtention(QColor imu_color, float imu
 	imu_size(imu_size), 
 	WrapperExtention()
 {
-	imu_mesh.setSource(QUrl::fromLocalFile(findFile(QString("unit_sphere_medres.obj"))));
+	imu_mesh = new QMesh;
+	imu_mesh->setSource(QUrl::fromLocalFile(findFile(QString("unit_sphere_medres.obj"))));
 }
 
 std::string ImuPositionModelExtention::getExtentionName() {
@@ -41,7 +42,7 @@ QEntity* ImuPositionModelExtention::getVisual() {
 			position->setTranslation(QVector3D(imu_positions[i][0], imu_positions[i][1], imu_positions[i][2]));
 			position->setScale(imu_size);
 
-			imu_visual->addComponent(&imu_mesh);
+			imu_visual->addComponent(imu_mesh);
 			imu_visual->addComponent(position);
 			imu_visual->addComponent(material);
 

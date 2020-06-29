@@ -26,6 +26,8 @@ class ImuPositionPlugin : public QObject, public OptionalInterface {
 		ToolkitApp* parentApp;
 		QAction* load_file_trigger;
 
+		std::map<RBDLModelWrapper*, QString> model_file_map;
+
 		float imu_size; 
 		QColor imu_color;
 
@@ -33,6 +35,7 @@ class ImuPositionPlugin : public QObject, public OptionalInterface {
 
 	public slots:
 		void action_load_data();
+		void reload(RBDLModelWrapper *model);
 };
 
 #endif 
