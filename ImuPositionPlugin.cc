@@ -34,7 +34,7 @@ void ImuPositionPlugin::init(ToolkitApp* app) {
 		for (int i=0; i<data_list.size(); i++) {
 			if (i < parentApp->getLoadedModels()->size() ) {
 				auto file = data_list[i];
-				ImuPositionModelExtention* ext;
+				ImuPositionModelExtension* ext;
 				try {
 					ext = loadImuPositionFile(file);
 				} catch (RigidBodyDynamics::Errors::RBDLError& e){
@@ -42,7 +42,7 @@ void ImuPositionPlugin::init(ToolkitApp* app) {
 					delete ext;
 				}
 				RBDLModelWrapper* rbdl_model = parentApp->getLoadedModels()->at(i);
-				rbdl_model->addExtention(ext);
+				rbdl_model->addExtension(ext);
 				model_file_map[rbdl_model] = file;
 			}
 		}
@@ -86,7 +86,7 @@ void ImuPositionPlugin::action_load_data() {
 		file_dialog.setNameFilter(tr("Imu Position File (*.txt)"));
 		file_dialog.setFileMode(QFileDialog::ExistingFile);
 
-		ImuPositionModelExtention* ext;
+		ImuPositionModelExtension* ext;
 		if (file_dialog.exec()) {
 			QString filepath;
 			try {
@@ -103,7 +103,7 @@ void ImuPositionPlugin::action_load_data() {
 				}
 
 				if (rbdl_model != nullptr) {
-					rbdl_model->addExtention(ext);
+					rbdl_model->addExtension(ext);
 				} else {
 					delete ext;
 				}
@@ -120,13 +120,13 @@ void ImuPositionPlugin::reload(RBDLModelWrapper* model) {
 	for (auto it = model_file_map.begin(); it != model_file_map.end(); it++) {
 		if ( it->first == model ) {
 			auto ext = loadImuPositionFile(it->second);
-			model->addExtention(ext);
+			model->addExtension(ext);
 		}
 	}
 }
 
-ImuPositionModelExtention* ImuPositionPlugin::loadImuPositionFile(QString path) {
-	ImuPositionModelExtention* extention = new ImuPositionModelExtention(imu_color, imu_size);
+ImuPositionModelExtension* ImuPositionPlugin::loadImuPositionFile(QString path) {
+	ImuPositionModelExtension* extention = new ImuPositionModelExtension(imu_color, imu_size);
 
 	std::vector<std::string> names;
 	std::vector<float> row_values;

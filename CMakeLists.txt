@@ -3,7 +3,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 
 	
 SET(Plugin_SRCS
-	ImuPositionModelExtention.cc
+	ImuPositionModelExtension.cc
 	ImuPositionPlugin.cc
 )
 
@@ -61,6 +61,8 @@ ADD_DEFINITIONS (${QT_DEFINITIONS})
 ADD_DEFINITIONS (-DQT_PLUGIN)
 ADD_DEFINITIONS (-DQT_SHARED)
 
+FIND_LIBRARY(TOOLKIT_LIB NAMES toolkitlib PATHS ${TOOLKIT_BUILD_PATH})
+
 ADD_LIBRARY (imupositionplugin SHARED ${Plugin_SRCS})
 
 TARGET_LINK_LIBRARIES (imupositionplugin 
@@ -74,6 +76,7 @@ TARGET_LINK_LIBRARIES (imupositionplugin
 	Qt5::3DRender
 	Qt5::3DInput
 	${RBDL_LIBRARY}
+	${TOOLKIT_LIB}
 )
 
 INSTALL( TARGETS imupositionplugin LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})	

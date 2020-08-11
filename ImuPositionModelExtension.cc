@@ -1,4 +1,4 @@
-#include "ImuPositionModelExtention.h"
+#include "ImuPositionModelExtension.h"
 
 #include <Qt3DCore>
 #include <Qt3DRender>
@@ -8,25 +8,25 @@ using namespace Qt3DCore;
 using namespace Qt3DRender;
 using namespace Qt3DExtras;
 
-ImuPositionModelExtention::ImuPositionModelExtention(QColor imu_color, float imu_size) : 
+ImuPositionModelExtension::ImuPositionModelExtension(QColor imu_color, float imu_size) : 
 	imu_color(imu_color), 
 	imu_size(imu_size), 
-	WrapperExtention()
+	WrapperExtension()
 {
 	imu_mesh = new QMesh;
 	imu_mesh->setSource(QUrl::fromLocalFile(findFile(QString("unit_sphere_medres.obj"))));
 }
 
-std::string ImuPositionModelExtention::getExtentionName() {
+std::string ImuPositionModelExtension::getExtensionName() {
 	return "ImuPositions";
 }
 
-void ImuPositionModelExtention::update(float current_time) {
+void ImuPositionModelExtension::update(float current_time) {
 	//nothing to update in sync with time
 	return;
 }
 
-QEntity* ImuPositionModelExtention::getVisual() {
+QEntity* ImuPositionModelExtension::getVisual() {
 	if (model_parent != nullptr) {
 		for (int i=0;i<imu_segments.size();i++) {
 			imu_visuals.push_back(new QEntity);
@@ -53,7 +53,7 @@ QEntity* ImuPositionModelExtention::getVisual() {
 	return nullptr;
 }
 
-void ImuPositionModelExtention::addImuPosition(const std::string& segment_name, const Vector3d& position) {
+void ImuPositionModelExtension::addImuPosition(const std::string& segment_name, const Vector3d& position) {
 	imu_segments.push_back(segment_name);
 	imu_positions.push_back(position);
 }

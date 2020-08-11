@@ -8,7 +8,7 @@
 
 using namespace RigidBodyDynamics::Math;
 
-class ImuPositionModelExtention : public WrapperExtention {
+class ImuPositionModelExtension : public WrapperExtension {
 	private:
 		float imu_size; 
 		QColor imu_color;
@@ -20,9 +20,9 @@ class ImuPositionModelExtention : public WrapperExtention {
 
 		std::vector<Qt3DCore::QEntity*> imu_visuals;
 	public:
-		ImuPositionModelExtention(QColor color, float size);
+		ImuPositionModelExtension(QColor color, float size);
 
-		std::string getExtentionName();
+		std::string getExtensionName();
 		void update(float current_time);
 		Qt3DCore::QEntity* getVisual();
 

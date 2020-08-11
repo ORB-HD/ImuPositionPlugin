@@ -8,7 +8,7 @@
 #include "toolkit_errors.h"
 #include "util.h"
 
-#include "ImuPositionModelExtention.h"
+#include "ImuPositionModelExtension.h"
 
 class ImuPositionPlugin : public QObject, public OptionalInterface {
 	Q_OBJECT
@@ -20,7 +20,7 @@ class ImuPositionPlugin : public QObject, public OptionalInterface {
 
 		void init(ToolkitApp* app);
 
-		ImuPositionModelExtention* loadImuPositionFile(QString path);
+		ImuPositionModelExtension* loadImuPositionFile(QString path);
 
 	private:
 		ToolkitApp* parentApp;
